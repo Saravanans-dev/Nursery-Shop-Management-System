@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💳 Quick Payment - GreenLeaf Nursery</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(45deg, #2d5a2d, #28a745);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        .header h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .total { font-size: 2rem; font-weight: 800; }
+        
+        .content { padding: 2rem; }
+        .payment-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        .tab {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .tab.active { 
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white; 
+        }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #28a745;
+            box-shadow: 0 0 0 4px rgba(40,167,69,0.1);
+        }
+        
+        .quick-fill {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 1rem;
+        }
+        
+        .cod-box {
+            background: #d4edda;
+            border: 2px solid #c3e6cb;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        #online.active .online-box {
+    background: #e6f9ec;
+    border: 2px solid #a3e4b5;
+        }
+       
+        
+        .pay-btn {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+        .pay-online {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+        }
+        .pay-cod {
+            background: linear-gradient(45deg, #ffc107, #e0a800);
+            color: #333;
+            font-weight: 700;
+        }
+        .pay-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+        
+        .order-summary {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+            font-size: 15px;
+        }
+        .summary-row:last-child {
+            border-bottom: none;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #28a745;
+            padding-top: 1rem;
+            margin-top: 0.5rem;
+        }
+        
+        @media (max-width: 480px) {
+            .container { margin: 0.5rem; border-radius: 20px; }
+            .content { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌿 GreenLeaf Nursery</h1>
+            <div class="total" id="grandTotal">₹<span id="totalAmount">0</span></div>
+        </div>
+        
+        <div class="content">
+            <div class="order-summary" id="orderSummary"></div>
+            
+            <div class="payment-tabs">
+               <button type="button" class="tab active" data-tab="online">💳 Online Payment</button>
+<button type="button" class="tab" data-tab="cod">💰 Cash on Delivery</button>
+            </div>
+            
+            <form id="paymentForm" method="post" action="save_order.php">
+                <!-- Online Payment -->
+                <div id="online" class="tab-content active">
+                    <div class="online-box">
+                        🔒 Secure Online Payment<br>
+                        <small>Card/UPI/Net Banking</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Name *</label>
+                        <input type="text" id="customerName" required>
+                    </div>
+                     <div class="form-group">
+                     <label>📞Contact Number *</label>
+                     <input type="tel" id="onlinePhone" required>
+                     </div>
+                    
+                    <div class="form-group">
+                        <label>Card/UPI ID *</label>
+                        <input type="text" id="paymentDetails" placeholder="1234 5678 9012 3456 or yourupi@paytm" required>
+                    </div>
+                </div>
+                
+                <!-- COD -->
+                <div id="cod" class="tab-content">
+                    <div class="cod-box">
+                        ✅ Cash on Delivery<br>
+                        <strong>Pay ₹ amount when plants arrive!</strong><br>
+                        <small>No advance payment • Plants delivered fresh</small>
+                    </div>
+                    <div class="form-group">
+    <label>Name *</label>
+    <input type="text" id="codName" name="codName">
+</div>
+                    
+                    
+                    <div class="form-group">
+                        <label>📞 Contact Number *</label>
+                       <input type="tel" id="codPhone" name="codPhone" >
+                    </div>
+                </div>
+                
+                <!-- Common fields -->
+                <div class="form-group">
+                    <label>📍 Delivery Address *</label>
+                    <textarea id="address" rows="3" required placeholder="Door no, Street, Area, Landmark..."></textarea>
+                </div>
+                
+                <button type="button" class="quick-fill" onclick="autoFillLocation()">
+                    🚀 Auto Fill My Location
+                </button>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label>City *</label>
+                        <input type="text" id="city" value="" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Pincode *</label>
+                        <input type="text" id="pincode" maxlength="6" required>
+                    </div>
+                </div>
+                
+                <button type="submit" class="pay-btn" id="payBtn">
+                    ✅ Place Order Now
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        
+
+       
+document.getElementById('paymentForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const activeTab = document.querySelector('.tab.active').dataset.tab;
+
+    let name = "";
+    let phone = "";
+    let payment = "";
+
+    if (activeTab === 'online') {
+        name = document.getElementById('customerName').value.trim();
+        phone = document.getElementById('onlinePhone').value.trim();
+        payment = "online";
+
+        let paymentDetails = document.getElementById('paymentDetails').value.trim();
+
+        if (!name || !phone || !paymentDetails) {
+            alert("Fill Online Payment Details");
+            return;
+        }
+
+    } else {
+        name = document.getElementById('codName').value.trim();
+        phone = document.getElementById('codPhone').value.trim();
+        payment = "cod";
+
+        if (!name || !phone) {
+            alert("Fill COD Details");
+            return;
+        }
+    }
+
+    let address = document.getElementById('address').value.trim();
+    let city = document.getElementById('city').value.trim();
+    let pincode = document.getElementById('pincode').value.trim();
+
+    if (!address || !city || !pincode) {
+        alert("Fill Address");
+        return;
+    }
+let totalAmount = document.getElementById("totalAmount").textContent;
+    console.log(name, phone, payment, totalAmount); // 🔥 DEBUG
+
+    fetch("save_order.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: `name=${name}&phone=${phone}&address=${address}&city=${city}&pincode=${pincode}&payment_method=${payment}&total_amount=${totalAmount}`
+    })
+    .then(res => res.text())
+    .then(data => {
+        console.log("Response:", data);
+
+
+    if (data.trim() === "success") {
+
+        localStorage.removeItem("nurseryCart");
+        localStorage.removeItem("cartOrderData");
+
+        alert("🎉 Order Placed Successfully!");
+
+        if (payment === "cod") {
+            window.location.href = "cod_success.html";
+        } else {
+            window.location.href = "order_success.html";
+        }
+
+    } else {
+        alert("❌ Error: " + data);
+    }
+})
+    .catch(err => {
+        console.error(err);
+        alert("❌ Server error");
+    });
+});
+    // Tab switching
+document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', function () {
+        const tabType = this.dataset.tab;
+
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+        this.classList.add('active');
+        document.getElementById(tabType).classList.add('active');
+
+        const payBtn = document.getElementById('payBtn');
+        const customerName = document.getElementById('customerName');
+        const paymentDetails = document.getElementById('paymentDetails');
+        const onlinePhone = document.getElementById('onlinePhone');
+        const codPhone = document.getElementById('codPhone');
+        const codName = document.getElementById('codName');
+
+        if (tabType === 'cod') {
+            payBtn.textContent = 'Order with COD';
+            payBtn.className = 'pay-btn pay-cod';
+
+            customerName.required = false;
+            paymentDetails.required = false;
+            onlinePhone.required = false;
+
+            customerName.disabled = true;
+            paymentDetails.disabled = true;
+            onlinePhone.disabled = true;
+
+            codName.required = true;
+            codPhone.required = true;
+
+            codName.disabled = false;
+            codPhone.disabled = false;
+        } else {
+            payBtn.textContent = '💳 Pay Online Now';
+            payBtn.className = 'pay-btn pay-online';
+
+            customerName.required = true;
+            paymentDetails.required = true;
+            onlinePhone.required = true;
+
+            customerName.disabled = false;
+            paymentDetails.disabled = false;
+            onlinePhone.disabled = false;
+
+            codName.required = false;
+            codPhone.required = false;
+
+            codName.disabled = true;
+            codPhone.disabled = true;
+        }
+    });
+});
+function renderSummary() {
+    const storedData = localStorage.getItem("cartOrderData");
+    const cartOrderData = storedData ? JSON.parse(storedData) : [];
+
+    if (cartOrderData.length === 0) {
+        document.getElementById('orderSummary').innerHTML =
+            '<div style="text-align:center;color:#999;padding:2rem;">🛒 No items selected</div>';
+        document.getElementById('totalAmount').textContent = '0';
+        return;
+    }
+
+    let html = '';
+    let grandTotal = 0;
+
+    cartOrderData.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        grandTotal += itemTotal;
+
+        html += `
+            <div class="summary-row">
+                <span>${item.name} × ${item.quantity}</span>
+                <span>₹${itemTotal}</span>
+            </div>
+        `;
+    });
+
+    const tax = grandTotal * 0.08;
+    const finalTotal = grandTotal + tax;
+
+    html += `
+        <div class="summary-row">
+            <span><strong>Subtotal</strong></span>
+            <span><strong>₹${grandTotal}</strong></span>
+        </div>
+        <div class="summary-row">
+            <span>Tax (8%)</span>
+            <span>₹${tax.toFixed(2)}</span>
+        </div>
+        <div class="summary-row">
+            <span><strong>Grand Total</strong></span>
+            <span><strong>₹${finalTotal.toFixed(2)}</strong></span>
+        </div>
+    `;
+
+    document.getElementById('orderSummary').innerHTML = html;
+    document.getElementById('totalAmount').textContent = finalTotal.toFixed(2);
+}
+
+        async function autoFillLocation() {
+            const btn = event.target;
+            btn.disabled = true;
+            btn.innerHTML = '🔄 Detecting...';
+            try {
+                const pos = await new Promise((res, rej) => navigator.geolocation.getCurrentPosition(res, rej));
+                const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`);
+                const data = await res.json();
+                document.getElementById('address').value = data.display_name || '';
+                document.getElementById('city').value = data.address.city || 'Karur';
+                document.getElementById('pincode').value = data.address.postcode || '';
+            } catch(e) {
+                alert('📍 Enter address manually');
+            }
+            btn.disabled = false;
+            btn.innerHTML = '🚀 Auto Fill My Location';
+        }
+
+window.onload = () => {
+    renderSummary();
+
+    document.querySelector('.tab.active').click(); // 🔥 MUST
+
+    const onlineBox = document.querySelector('.online-box');
+    if (onlineBox) {
+        onlineBox.style.background = '#e6f9ec';
+        onlineBox.style.border = '2px solid #a3e4b5';
+    }
+};
+
+// 🔥 trigger tab refresh
+document.querySelector('.tab.active').click();
+    </script>
+</body>
+</html>

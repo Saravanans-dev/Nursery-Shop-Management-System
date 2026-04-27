@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌿 Green Haven Nursery - Premium Plant Collection</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-green: #28a745;
+            --secondary-green: #20c997;
+            --dark-green: #2d5a2d;
+            --glass-bg: rgba(255,255,255,0.95);
+            --shadow-lg: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 50%, #a5d6a7 100%);
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px);
+            padding: 1rem 5%;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .back-btn {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            transform: translateX(-2px);
+            box-shadow: 0 5px 15px rgba(40,167,69,0.4);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #28a745, #20c997);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-left: auto;
+        }
+
+        .cart-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .cart-btn {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .cart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(40,167,69,0.3);
+        }
+
+        .cart-btn-empty {
+            background: linear-gradient(45deg, #6c757d, #5a6268);
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .cart-btn-empty:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            padding: 1rem 5%;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 2rem;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--dark-green);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-logo i {
+            font-size: 2.2rem;
+            color: var(--primary-green);
+        }
+
+        .nav-search {
+            position: relative;
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .nav-search input {
+            width: 100%;
+            padding: 12px 50px 12px 20px;
+            border: 2px solid rgba(40,167,69,0.2);
+            border-radius: 25px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: rgba(255,255,255,0.9);
+        }
+
+        .nav-search input:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(40,167,69,0.1);
+        }
+
+        .nav-search i {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--dark-green);
+            font-size: 1.2rem;
+        }
+
+        .nav-links {
+    display: flex;
+    list-style: none;
+    gap: 1rem;
+    align-items: center;
+    margin-left: auto;   /* 🔥 pushes Home to right */
+}
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: var(--primary-green);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .cart-badge {
+            background: var(--secondary-green);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        /* Hero Section - FIXED */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23e8f5e8" width="1200" height="600"/><circle fill="%2328a745" opacity="0.1" cx="200" cy="200" r="100"><animate attributeName="cy" values="200;150;200" dur="4s" repeatCount="indefinite"/></circle><circle fill="%2320c997" opacity="0.1" cx="1000" cy="400" r="80"><animate attributeName="cy" values="400;350;400" dur="5s" repeatCount="indefinite"/></circle></svg>');
+            background-size: cover;
+            background-position: center;
+            height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            border-radius: 30px;
+            margin-left: 5%;
+            margin-right: 5%;
+        }
+
+        .hero-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .hero-content p {
+            font-size: 1.4rem;
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 16px 40px;
+            background: var(--primary-green);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(40,167,69,0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(40,167,69,0.4);
+        }
+
+        /* Filters */
+        .filters {
+            padding: 4rem 5%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 12px 30px;
+            border: 2px solid rgba(40,167,69,0.2);
+            background: white;
+            color: var(--dark-green);
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary-green);
+            color: white;
+            border-color: var(--primary-green);
+            transform: translateY(-2px);
+        }
+
+        /* Products Section - FIXED WITH ID */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 5%;
+        }
+
+        .products-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: #2d5a2d;
+            margin-bottom: 1rem;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px,1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            transition: all 0.4s;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.4s;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: 1.2rem;
+        }
+
+        .product-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #2d5a2d;
+            margin-bottom: 0.4rem;
+            line-height: 1.3;
+        }
+
+        .product-desc {
+            color: #666;
+            margin-bottom: 0.8rem;
+            line-height: 1.4;
+            font-size: 0.95rem;
+        }
+
+        .product-price {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #28a745;
+            margin-bottom: 0.8rem;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-success {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(40,167,69,0.3);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-green);
+            color: white;
+            padding: 4rem 5% 2rem;
+            margin-top: 5rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1.5rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary-green);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            .logo {
+                margin-left: 0;
+                font-size: 1.5rem;
+            }
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px,1fr));
+                gap: 1.5rem;
+            }
+            .nav-container {
+                flex-wrap: wrap;
+            }
+            .nav-links {
+                display: none;
+            }
+            .hamburger {
+                display: flex;
+            }
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+        .search-suggestions {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    width: 100%;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 999;
+    display: none;
+}
+
+.suggestion-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.suggestion-item:hover {
+    background: #f1f1f1;
+}
+
+.suggestion-item img {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.suggestion-text {
+    font-size: 14px;
+}
+/* 🔥 Focus Animation */
+.product-card.focused {
+    animation: smoothFocus 2.2s cubic-bezier(0.25, 1, 0.3, 1);
+    border: 2px solid rgba(40,167,69,0.4);
+    box-shadow: 0 8px 25px rgba(40,167,69,0.25);
+}
+
+/* 🔥 smooth bounce + settle */
+@keyframes smoothFocus {
+    0% {
+        transform: scale(1) translateY(0);
+        box-shadow: 0 0 0 rgba(40,167,69,0);
+    }
+    40% {
+        transform: scale(1.06) translateY(-6px);
+        box-shadow: 0 15px 35px rgba(40,167,69,0.35);
+    }
+    70% {
+        transform: scale(1.02) translateY(2px);
+    }
+    100% {
+        transform: scale(1.03) translateY(0);
+        box-shadow: 0 8px 25px rgba(40,167,69,0.25);
+    }
+}
+.products-section {
+    margin-top: -20px;   /* adjust if needed */
+    padding-top: 1.5rem;
+}
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <i class="fas fa-leaf"></i> Green Haven
+            </a>
+            <div class="nav-search">
+                <input type="text" id="searchInput" placeholder="Search plants...">
+                <i class="fas fa-search"></i>
+                <div id="searchSuggestions" class="search-suggestions"></div>
+            </div>
+            <ul class="nav-links">
+    <li><a href="#" class="active">Home</a></li>
+    <li><a href="#" onclick="logoutUser()">Logout</a></li>
+</ul>
+            <div class="cart-info">
+                <span id="cartCount">🛒 0</span>
+                <a href="cart.html" id="cartBtn" class="cart-btn">View Cart</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section - FIXED SHOP NOW BUTTON -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Welcome to Green Haven Nursery</h1>
+            <p>Discover beautiful plants to transform your space into a green paradise</p>
+            <!-- ✅ FIXED: Now scrolls to productsContainer -->
+            <a href="#productsContainer" class="btn btn-primary">Shop Now</a>
+        </div>
+    </section>
+
+    <!-- Products Section - FIXED WITH PROPER ID -->
+    <div class="main-container">
+        <div class="products-section" id="productsContainer">
+            <h2 class="section-title">Our Beautiful Plants</h2>
+            <div id="productsContainer" class="products-grid">
+                <!-- Dynamic content loads here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Green Haven Nursery</h3>
+                    <p>Your trusted source for quality plants and gardening supplies.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="cart.html">View Cart</a></li>
+                        <li><a href="#" onclick="logoutUser()">Logout</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-phone"></i> +91 98765 43210</p>
+                    <p><i class="fas fa-envelope"></i> info@greenhaven.in</p>
+                    <p><i class="fas fa-map-marker"></i> Bengaluru, Karnataka</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Green Haven Nursery. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let products = [];
+        let cart = [];
+
+        window.onload = function(){
+            loadProducts();
+            cart = JSON.parse(localStorage.getItem('nurseryCart')) || [];
+            updateCartDisplay();
+            setupEventListeners();
+        };
+
+        function goBack() {
+            window.location.replace("customer-login.html");
+        }
+
+        function loadProducts(){
+            fetch("http://localhost:8080/nursery/get_plants.php")
+            .then(res => res.json())
+            .then(data => {
+                products = data;
+                renderProducts();
+            })
+            .catch(err => {
+                document.getElementById('productsContainer').innerHTML = `
+                    <div class="empty-state">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">🌱</div>
+                        <h2>No products available</h2>
+                        <p>Please check back later</p>
+                    </div>
+                `;
+            });
+        }
+
+        function renderProducts(productsToShow = products) {
+            const container = document.querySelector('.products-grid');
+            
+            if (productsToShow.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">🌱</div>
+                        <h2>No products available</h2>
+                        <p>Please check back later</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = productsToShow.map(product => {
+                return `
+                    <div class="product-card" id="product-${product.id}" data-category="${product.category || 'indoor'}">
+                        <img src="${product.image}" class="product-image"
+                            onerror="this.src='https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=400'"
+                            alt="${product.name}">
+                        <div class="product-info">
+                            <h3 class="product-name">${product.name}</h3>
+                            <div class="product-price">₹${product.price.toLocaleString('en-IN')}</div>
+                            <button class="add-to-cart btn-success" onclick="addToCart(${product.id}, this)">
+                               🛒 Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function addToCart(productId, btn){
+            cart = JSON.parse(localStorage.getItem('nurseryCart')) || [];
+            const totalItems = cart.reduce((sum,item)=> sum + item.quantity,0);
+            const product = products.find(p => p.id == productId);
+            if(!product) return;
+
+            const existingItem = cart.find(item => item.id == productId);
+
+            if(existingItem){
+                existingItem.quantity++;
+            }else{
+                cart.push({...product, quantity:1});
+            }
+
+            localStorage.setItem("nurseryCart", JSON.stringify(cart));
+            updateCartDisplay();
+
+            btn.innerHTML = "✅ View Cart";
+            btn.style.background = "#20c997";
+            btn.onclick = () => {
+                window.location.href = "cart.html";
+            };
+
+            setTimeout(()=>{
+                btn.innerHTML = "🛒 Add to Cart";
+                btn.style.background = "";
+                btn.onclick = function(){
+                    addToCart(productId, btn);
+                };
+            },2000);
+        }
+
+        function updateCartDisplay(){
+            cart = JSON.parse(localStorage.getItem('nurseryCart')) || [];
+            const totalItems = cart.reduce((sum,item)=> sum + item.quantity,0);
+
+            document.getElementById("cartCount").textContent = "🛒 " + totalItems;
+            document.getElementById("cartBtn").textContent = "View Cart (" + totalItems + ")";
+        }
+
+        function setupEventListeners() {
+            // Search functionality
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', filterProducts);
+            }
+        }
+
+        function filterProducts() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const suggestionsBox = document.getElementById('searchSuggestions');
+
+    if (!searchTerm) {
+        suggestionsBox.style.display = "none";
+        renderProducts(products);
+        return;
+    }
+
+    const filtered = products.filter(product => 
+        product.name.toLowerCase().includes(searchTerm)
+    );
+
+    // Show suggestions
+    suggestionsBox.style.display = "block";
+
+    suggestionsBox.innerHTML = filtered.slice(0, 6).map(product => `
+        <div class="suggestion-item" onclick="goToProduct(${product.id})">
+            <img src="${product.image}" onerror="this.src='https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=100'">
+            <div class="suggestion-text">${product.name}</div>
+        </div>
+    `).join('');
+
+    // Also filter main products
+    renderProducts(filtered);
+}
+        // Auto refresh
+        setInterval(() => {
+            loadProducts();
+            cart = JSON.parse(localStorage.getItem('nurseryCart')) || [];
+            updateCartDisplay();
+        }, 5000);
+       function goToProduct(productId) {
+
+    document.getElementById("searchSuggestions").style.display = "none";
+
+    renderProducts(products);
+
+    setTimeout(() => {
+
+        const productCard = document.getElementById(`product-${productId}`);
+        if (!productCard) return;
+
+        // 🔥 smooth natural scroll
+        productCard.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+
+        // remove old focus
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.classList.remove('focused');
+        });
+
+        // add animation
+        productCard.classList.add("focused");
+
+        setTimeout(() => {
+            productCard.classList.remove("focused");
+        }, 2500);
+
+    }, 100);
+}
+
+    // suggestions hide
+    document.getElementById("searchSuggestions").style.display = "none";
+    function logoutUser() {
+    if (confirm("Are you sure you want to logout?")) {
+
+        localStorage.removeItem("nurseryCart");
+        localStorage.removeItem("loggedInUser");
+
+        // 🔥 Go to login page
+        window.location.href = "customer-login.html";
+    }
+}
+    </script>
+</body>
+</html> 

@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Green Haven - Animated Admin</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    display:flex;
+    background:linear-gradient(135deg,#e8f5e9,#f4f6f9);
+    overflow-x:hidden;
+}
+
+/* SIDEBAR */
+.sidebar{
+    width:250px;
+    height:100vh;
+    background:#1b5e20;
+    color:white;
+    padding:20px;
+    transition:0.4s;
+    box-shadow:5px 0 20px rgba(0,0,0,0.1);
+}
+
+.sidebar h2{
+    margin-bottom:40px;
+    animation:fadeDown 1s ease;
+}
+
+.sidebar ul{
+    list-style:none;
+}
+
+.sidebar ul li{
+    padding:14px;
+    margin-bottom:12px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:0.3s;
+    position:relative;
+    overflow:hidden;
+}
+
+.sidebar ul li:hover,
+.sidebar ul li.active{
+    background:#145a1a;
+    transform:translateX(8px);
+}
+
+/* MAIN */
+.main{
+    flex:1;
+    padding:40px;
+}
+
+.header{
+    margin-bottom:30px;
+    animation:fadeDown 0.8s ease;
+}
+
+.header h1{
+    color:#1b5e20;
+}
+
+/* SECTION ANIMATION */
+.section{
+    display:none;
+    animation:fadeIn 0.6s ease forwards;
+}
+
+.section.active{
+    display:block;
+}
+
+/* STATS */
+.stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.stat-card{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+    text-align:center;
+    transition:0.3s;
+    animation:fadeUp 0.8s ease;
+}
+
+.stat-card:hover{
+    transform:translateY(-10px) scale(1.03);
+    box-shadow:0 15px 35px rgba(0,0,0,0.15);
+}
+
+.stat-card p{
+    font-size:28px;
+    font-weight:700;
+    color:#1b5e20;
+}
+
+/* CARD */
+.card{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+    margin-bottom:30px;
+    animation:fadeUp 0.8s ease;
+}
+
+/* FORM */
+input,button{
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    border-radius:8px;
+    border:1px solid #ccc;
+    transition:0.3s;
+}
+
+input:focus{
+    border-color:#1b5e20;
+    outline:none;
+    box-shadow:0 0 8px rgba(27,94,32,0.3);
+}
+
+button{
+    background:#1b5e20;
+    color:white;
+    border:none;
+    cursor:pointer;
+    position:relative;
+    overflow:hidden;
+}
+
+button:hover{
+    background:#145a1a;
+    transform:scale(1.03);
+}
+
+/* TABLE */
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+    text-align:center;
+}
+
+th{
+    background:#e8f5e9;
+}
+
+tr:hover{
+    background:#f1f8f4;
+    transition:0.3s;
+}
+
+.delete-btn{
+    background:#dc3545 !important;
+    padding:8px 15px !important;
+    font-size:12px !important;
+    border-radius:5px !important;
+    cursor:pointer !important;
+}
+
+/* ANIMATIONS */
+@keyframes fadeIn{
+    from{opacity:0; transform:translateY(10px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+@keyframes fadeDown{
+    from{opacity:0; transform:translateY(-20px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+@keyframes fadeUp{
+    from{opacity:0; transform:translateY(20px);}
+    to{opacity:1; transform:translateY(0);}
+}
+</style>
+</head>
+
+<body>
+<div class="sidebar">
+    <h2>🌿 Green Haven Admin</h2>
+    <ul>
+        <li class="active" onclick="showSection('dashboard',this)">📊 Dashboard</li>
+        <li onclick="showSection('addPlant',this)">➕ Add Plant</li>
+        <li onclick="showSection('plants',this)">🌱 Manage Plants</li>
+        <li onclick="showSection('orders',this)">📦 Orders</li>
+        <li onclick="logout()">🚪 Logout</li>
+    </ul>
+</div>
+
+<div class="main">
+    <div class="header">
+        <h1> Nursery Plant Admin Dashboard</h1>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="section active">
+        <div class="stats">
+            <div class="stat-card">
+                <h3>Total Plants</h3>
+                <p id="totalPlants">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Total Orders</h3>
+                <p id="totalOrders">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Total Revenue</h3>
+                <p id="totalRevenue">₹0</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD PLANT -->
+    <div id="addPlant" class="section">
+        <div class="card">
+            <h2>➕ Add New Plant</h2>
+            <input type="text" id="plantname" placeholder="Plant Name (eg: Monstera Deliciosa)">
+            <input type="number" id="plantprice" placeholder="Price (₹)" step="0.01" min="0">
+            <input type="text" id="plantimage" placeholder="Image URL (optional)">
+            <button onclick="addPlant()">🌱 Add Plant</button>
+        </div>
+    </div>
+
+    <!-- MANAGE PLANTS -->
+    <div id="plants" class="section">
+        <div class="card">
+            <h2>🌱 Manage Plants</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Action</th>
+                        
+                    </tr>
+                </thead>
+                <tbody id="plantlist">
+                    <!-- Plants will be added here dynamically -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ORDERS -->
+<!-- ORDERS -->
+<section id="orders" class="section">
+    <div class="card">
+        <h2>📦 Recent Orders</h2>
+
+        <button onclick="clearOrders()" style="max-width:200px; margin-bottom:15px; background:#dc3545;">
+            🗑 Clear Orders
+        </button>
+
+        <div id="ordersContent">
+            <p style="text-align:center;color:#666;padding:40px;">No orders yet. Plants will generate orders! 🚀</p>
+        </div>
+    </div>
+</section>
+<script>
+let plants = [];
+let nextId = 1;
+let orders = [];
+
+// Load data on page load
+window.onload = function() {
+    loadPlants();
+    loadOrders();
+};
+// ===== PLANT MANAGEMENT =====
+function savePlants() {
+    localStorage.setItem('nurseryProducts', JSON.stringify(plants));
+}
+
+function loadPlants(){
+
+fetch("get_plants.php")
+.then(res => res.json())
+.then(data => {
+    plants = data;
+
+let table = document.getElementById("plantlist");
+table.innerHTML="";
+
+// dashboard count update
+document.getElementById("totalPlants").innerText = data.length;
+
+data.forEach(p => {
+
+table.innerHTML += `
+<tr>
+<td>${p.id}</td>
+<td><img src="${p.image}" width="50"></td>
+<td>${p.name}</td>
+<td>₹${p.price}</td>
+<td>
+<button onclick="deletePlant(${p.id})" class="delete-btn">
+Delete
+</button>
+</td>
+</tr>
+`;
+
+});
+updateDashboardStats();
+
+});
+
+}
+
+function addPlant() {
+
+const name = document.getElementById('plantname').value;
+const price = document.getElementById('plantprice').value;
+const image = document.getElementById('plantimage').value;
+
+fetch("add_plant.php",{
+method:"POST",
+headers:{
+"Content-Type":"application/x-www-form-urlencoded"
+},
+body:`plantname=${name}&plantprice=${price}&plantimage=${image}`
+})
+.then(res=>res.text())
+.then(data=>{
+
+if(data=="success"){
+alert("Plant Added Successfully");
+loadPlants();   // table refresh
+
+}else{
+alert("Error Adding Plant");
+}
+
+});
+
+    
+    // Clear form
+    document.getElementById('plantname').value = '';
+    document.getElementById('plantprice').value = '';
+    document.getElementById('plantimage').value = '';
+
+    updatePlantsTable();
+    updateTotalPlants();
+    updateDashboardStats();
+    alert('✅ Plant added successfully! Now visible in Product page 🌟');
+}
+
+function deletePlant(id){
+
+if(confirm("Delete this plant?")){
+
+fetch("delete_plant.php",{
+method:"POST",
+headers:{
+"Content-Type":"application/x-www-form-urlencoded"
+},
+body:"id="+id
+})
+.then(res=>res.text())
+.then(data=>{
+
+if(data=="success"){
+alert("Plant Deleted Successfully");
+loadPlants();   // table refresh
+}else{
+alert("Delete Failed");
+}
+
+});
+
+}
+
+}
+
+function updatePlantsTable() {
+    const tbody = document.getElementById('plantlist');
+    tbody.innerHTML = '';
+
+    plants.forEach(plant => {
+        const row = tbody.insertRow();
+        row.innerHTML = `
+            <td>${plant.id}</td>
+            <td><img src="${plant.image}" alt="${plant.name}" style="width:50px;height:50px;border-radius:8px;object-fit:cover;"></td>
+            <td>${plant.name}</td>
+            <td>₹${plant.price.toLocaleString('en-IN')}</td>
+            <td>
+                <button onclick="deletePlant(${plant.id})" class="delete-btn">
+                    🗑️ Delete
+                </button>
+            </td>
+        `;
+    });
+}
+
+function updateTotalPlants() {
+    document.getElementById('totalPlants').textContent = plants.length;
+}
+
+// ===== DASHBOARD STATS =====
+function updateDashboardStats() {
+    document.getElementById('totalPlants').textContent = plants.length;
+    document.getElementById('totalOrders').textContent = orders.length;
+    let revenue = 0;
+
+orders.forEach(order => {
+    if(order.status === 'delivered'){
+        revenue += Number(order.total_amount || 0);
+    }
+});
+
+document.getElementById('totalRevenue').textContent = '₹' + revenue;
+}
+// ===== ORDERS MANAGEMENT =====
+function loadOrders() {
+    fetch("get_orders.php")
+    .then(res => res.json())
+    .then(data => {
+        orders = data;
+
+        console.log("Orders Data:", orders);
+
+        updateOrdersTable();
+        updateDashboardStats();
+    })
+}
+
+// 🔥 AUTO REFRESH
+setInterval(() => {
+    loadOrders();
+}, 5000);
+function clearOrders() {
+    if (confirm("Are you sure delete orders?")) {
+
+        fetch("clear_orders.php")
+        .then(res => res.text())
+        .then(data => {
+
+            if(data == "success"){
+
+                orders = [];
+                updateOrdersTable();
+                updateDashboardStats();
+
+                alert("Orders cleared successfully!");
+
+            } else {
+                alert("Delete failed");
+            }
+
+        });
+
+    }
+}
+function updateOrdersTable() {
+    const container = document.getElementById('ordersContent');
+
+    if (orders.length === 0) {
+        container.innerHTML = '<p style="text-align:center;color:#666;padding:40px;">No orders found in database.</p>';
+        return;
+    }
+
+    container.innerHTML = `
+        <table style="width:100%;margin-top:20px;">
+            <thead>
+    <tr style="background:#e8f5e9;">
+        <th style="padding:12px;">Order ID</th>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>City</th>
+        <th>Pincode</th>
+        <th>Payment</th>
+        <th>Order Date</th>
+
+        <!-- 👇 இத தான் NEW -->
+        <th>Status</th>
+      <th>Delivery date</th>
+        
+
+    </tr>
+</thead>
+            <tbody>
+                ${orders.map(order => `
+                    <tr style="border-bottom:1px solid #eee;">
+                        <td style="padding:12px;font-weight:600;">#${order.id}</td>
+                        <td>${order.name}</td>
+                        <td>${order.phone}</td>
+                        <td>${order.address}</td>
+                        <td>${order.city}</td>
+                        <td>${order.pincode}</td>
+                        <td>
+                            <span style="padding:4px 12px;border-radius:20px;color:white;font-size:12px;
+                            background:${order.payment_method === 'online' ? 'green' : 'orange'}">
+                                ${order.payment_method}
+                            </span>
+                        </td>
+                        <td>${order.created_at}</td>
+<td>
+    <span id="status-${order.id}"
+    onclick="${order.status !== 'delivered' ? `markDelivered(${order.id})` : ''}"
+    style="padding:6px 12px;border-radius:20px;color:white;
+    background:${order.status === 'delivered' ? 'green' : 'orange'};
+    cursor:${order.status !== 'delivered' ? 'pointer' : 'default'};">
+    
+    ${order.status === 'delivered' ? 'Delivered' : 'Pending'}
+    </span>
+</td>
+
+<td id="date-${order.id}">
+    ${order.status === 'delivered' 
+    ? `<div>${new Date(order.created_at).toLocaleDateString('en-GB')}</div>
+       <small style="font-weight:bold;">Successfully</small>`
+    : ''}   <!-- 🔥 empty -->
+</td>
+</td>
+
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    `;
+}
+
+// ===== NAVIGATION =====
+function showSection(id, element) {
+    document.querySelectorAll('.section').forEach(sec => {
+        sec.classList.remove('active');
+    });
+    document.getElementById(id).classList.add('active');
+
+    document.querySelectorAll('.sidebar ul li').forEach(li => {
+        li.classList.remove('active');
+    });
+    element.classList.add('active');
+
+    // Update orders table when orders section opened
+    if (id === 'orders') {
+        loadOrders();
+        updateOrdersTable();
+    }
+}
+
+function logout() {
+    if (confirm('🚪 Are you sure you want to logout?')) {
+        alert("👋 Logged Out Successfully!");
+        window.location.href = "index.html";
+        // Clear admin data (optional)
+        // localStorage.clear();
+    }
+}
+function markDelivered(id){
+
+let statusEl = document.getElementById("status-"+id);
+let dateEl = document.getElementById("date-"+id);
+
+// loading
+statusEl.innerText = "Updating...";
+statusEl.style.background = "gray";
+
+fetch("update_order_status.php",{
+method:"POST",
+headers:{
+"Content-Type":"application/x-www-form-urlencoded"
+},
+body:"id="+id
+})
+.then(res=>res.text())
+.then(data=>{
+
+if(data=="success"){
+
+// ✅ status update
+statusEl.innerText = "Delivered";
+statusEl.style.background = "green";
+statusEl.onclick = null;
+
+// ✅ date update
+let today = new Date().toLocaleDateString('en-GB');
+dateEl.innerHTML = `
+    <div>${today}</div>
+    <small style="font-weight:bold;">Successfully</small>
+`;
+
+// 🔥 FIX: get fresh data from DB
+fetch("get_orders.php")
+.then(res => res.json())
+.then(data => {
+    orders = data;
+    updateDashboardStats(); // ✅ correct revenue update
+});
+
+}
+
+});
+
+}
+
+</script>
+
+</body>
+</html>

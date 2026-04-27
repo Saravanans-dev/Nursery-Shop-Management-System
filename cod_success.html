@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Payment Successful</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:Arial;
+}
+
+.box{
+    background:white;
+    padding:40px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 10px 20px rgba(0,0,0,0.05);
+}
+
+.circle{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    border:6px solid #4CAF50;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin:0 auto 20px;
+    animation:pop 0.5s ease-out;
+}
+
+.tick{
+    font-size:60px;
+    color:#4CAF50;
+    animation:fadeIn 0.8s ease-in-out forwards;
+}
+
+@keyframes pop{
+    0%{ transform:scale(0); }
+    100%{ transform:scale(1); }
+}
+
+@keyframes fadeIn{
+    0%{ opacity:0; transform:scale(0.5); }
+    100%{ opacity:1; transform:scale(1); }
+}
+
+h1{ color:#2e7d32; }
+p{ color:#555; }
+
+.btn{
+    margin-top:30px;
+    padding:12px 30px;
+    font-size:16px;
+    background:#2e7d32;
+    color:white;
+    border:none;
+    border-radius:25px;
+    cursor:pointer;
+    transition:0.3s;
+}
+.btn:hover{
+    background:#1b5e20;
+    transform:scale(1.1);
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+    <div class="circle">
+        <div class="tick">✔</div>
+    </div>
+
+    <h1>Order Successfully!</h1>
+    <p>Your order has been placed successfully 🌿</p>
+
+    <button class="btn" onclick="goHome()">Back to Shop</button>
+</div>
+
+<script>
+
+// 🔥 STEP 1: page load aana udane cart clear
+localStorage.removeItem("nurseryCart");
+localStorage.removeItem("cartOrderData");
+
+console.log("Cart cleared:", localStorage.getItem("nurseryCart"));
+
+// 🔥 STEP 2: button click la again clear + refresh
+function goHome(){
+    localStorage.removeItem("nurseryCart");
+    localStorage.removeItem("cartOrderData");
+
+    // force refresh so old data varadhu
+    window.location.href = "product.html?refresh=" + new Date().getTime();
+}
+
+</script>
+
+</body>
+</html>
